@@ -15,7 +15,7 @@ dist/
 downloads/
 eggs/
 .eggs/
-lib/
+#lib/
 lib64/
 parts/
 sdist/
@@ -101,5 +101,6 @@ ENV/
 .mypy_cache/
 
 # Otros
-output/
+output/img/
 img/
+

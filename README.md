@@ -1,1 +1,2 @@
-# Sun
+# Sun - Rotación diferencial del Sol
+

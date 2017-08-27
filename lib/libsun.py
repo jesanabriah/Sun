@@ -22,7 +22,7 @@ Created on 27/08/2017
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-    @contact: email: jesanabriah@unal.edu.co
+    @contact: jesanabriah@unal.edu.co
 
     @organization: Universidad Nacional de Colombia
 '''
@@ -32,9 +32,30 @@ from scipy import misc
 from scipy import ndimage
 
 def ls(ruta='.'):
+    '''
+    Muestra la lista de archivos del directorio especificado.
+
+    @return: Lista de nombres de archivos del directorio especificado.
+    Si no especifica valor, muestra la lista de archivos del directorio actual.
+    '''
     return listdir(ruta)
 
 def procesar_imagen(archivo, factor = 0.5, file = "white"):
+    '''
+    A partir de archivo procesa una imagen del Sol,
+    detectando los centros de masa con un factor
+    por encima del valor medio y por debajo del maximo.
+
+    Crea un archivo procesado en la carpeta output/img/~.png
+    y otro en output/mosaico_1024.png con una
+    superpocision de todos los valores.
+
+    @param archivo: la ruta del archivo a procesar
+
+    @param factor: Desde 0 para valor promedio, hasta 1 para valor maximo
+
+    @param file: puede ser 'white' para usar white_~.png o 'sun' para usar sun_~.png
+    '''
 
     # Lee la imagen del disco duro
     img = misc.imread ("img/" + archivo, 1)
@@ -68,12 +89,12 @@ def procesar_imagen(archivo, factor = 0.5, file = "white"):
         sun[y, x] = 0
 
     #configura un nuevo nombre para la imagen en output/
-    archivo = archivo[:-9]
     archivo = archivo[:13] + ".png"
 
     misc.imsave("output/img/" + archivo, sun)
     misc.imsave("output/mosaico_1024.png", mosaico)
 
 def resetMosaico():
+    'Reset image output/mosaico_1024.png with lib/img/sun_1024.png'
     img = misc.imread ("lib/img/sun_1024.png")
     misc.imsave("output/mosaico_1024.png", img)

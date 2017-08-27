@@ -22,15 +22,12 @@ Created on 26/08/2017
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-    @contact: email: jesanabriah@unal.edu.co
+    @contact: jesanabriah@unal.edu.co
 
     @organization: Universidad Nacional de Colombia
 '''
 
-from scipy import misc
-
 from lib import libsun as sun
-
 
 archivos = sun.ls("img/")
 
@@ -38,7 +35,8 @@ archivos = sun.ls("img/")
 sun.resetMosaico()
 
 for archivo in archivos:
-    sun.procesar_imagen(archivo, 0)
+    if archivo[-4:] == ".jpg":
+        sun.procesar_imagen(archivo)
     print ("Procesada: " + archivo)
 
 print ("Procedimiento exitoso!!! :)")

@@ -101,6 +101,6 @@ ENV/
 .mypy_cache/
 
 # Otros
-output/img/
-img/
+output/img/*.png
+img/*.jpg
 

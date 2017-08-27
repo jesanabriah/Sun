@@ -25,7 +25,7 @@ def procesar_imagen(archivo, factor = 0.5, file = "white"):
     maximum = ndimage.maximum(img)
 
     # Crea filtro con un criterio muy relativo :P
-    filtro = img > (median + maximum) * factor
+    filtro = img > median + (maximum - median) * factor
     img = img * filtro
 
     # Calcula los centros de masa con un maximo de NUM posibles manchas
@@ -35,8 +35,8 @@ def procesar_imagen(archivo, factor = 0.5, file = "white"):
     center_of_mass = ndimage.measurements.center_of_mass(img, lbl, range(2, num + 1))
 
     # crear mapa de imagen con elementos calculados
-    sun = misc.imread (file + ".png", 1)
-    mosaico = misc.imread ("mosaico.png", 1)
+    sun = misc.imread (file + "_1024.png", 1)
+    mosaico = misc.imread ("mosaico_1024.png", 1)
 
     for elemento in center_of_mass:
         y = int(elemento[0])
@@ -49,8 +49,8 @@ def procesar_imagen(archivo, factor = 0.5, file = "white"):
     archivo = archivo[:13] + ".png"
 
     misc.imsave("output/" + archivo, sun)
-    misc.imsave("mosaico.png", mosaico)
+    misc.imsave("mosaico_1024.png", mosaico)
 
 def resetMosaico():
-    img = misc.imread ("sun.png")
-    misc.imsave("mosaico.png", img)
+    img = misc.imread ("sun_1024.png")
+    misc.imsave("mosaico_1024.png", img)

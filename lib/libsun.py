@@ -40,14 +40,14 @@ def ls(ruta='.'):
     '''
     return listdir(ruta)
 
-def procesar_imagen(archivo, factor = 0.5, file = "white"):
+def procesar_imagen(archivo = "", factor = 0.5, file = "white"):
     '''
     A partir de archivo procesa una imagen del Sol,
     detectando los centros de masa con un factor
     por encima del valor medio y por debajo del maximo.
 
     Crea un archivo procesado en la carpeta output/img/~.png
-    y otro en output/mosaico_1024.png con una
+    y otro en output/mosaico_~.png con una
     superpocision de todos los valores.
 
     @param archivo: la ruta del archivo a procesar
@@ -79,7 +79,8 @@ def procesar_imagen(archivo, factor = 0.5, file = "white"):
     center_of_mass = ndimage.measurements.center_of_mass(img, lbl, range(2, num + 1))
 
     # crear mapa de imagen con elementos calculados
-    sun = misc.imread ("lib/img/" + file + "_1024.png", 1)
+    arch = archivo.split("_", 3)
+    sun = misc.imread ("lib/img/" + file + "_" + arch[2] + ".png", 1)
     mosaico = misc.imread ("output/mosaico_1024.png", 1)
 
     for elemento in center_of_mass:
@@ -92,9 +93,13 @@ def procesar_imagen(archivo, factor = 0.5, file = "white"):
     archivo = archivo[:13] + ".png"
 
     misc.imsave("output/img/" + archivo, sun)
-    misc.imsave("output/mosaico_1024.png", mosaico)
+    misc.imsave("output/mosaico_" + arch[2] + ".png", mosaico)
 
 def resetMosaico():
-    'Reset image output/mosaico_1024.png with lib/img/sun_1024.png'
+    'Reset images output/mosaico_*.png with lib/img/sun_*.png'
+
+    img = misc.imread ("lib/img/sun_512.png")
+    misc.imsave("output/mosaico_512.png", img)
+
     img = misc.imread ("lib/img/sun_1024.png")
     misc.imsave("output/mosaico_1024.png", img)

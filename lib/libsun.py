@@ -81,7 +81,7 @@ def procesar_imagen(archivo = "", factor = 0.5, file = "white"):
     # crear mapa de imagen con elementos calculados
     arch = archivo.split("_", 3)
     sun = misc.imread ("lib/img/" + file + "_" + arch[2] + ".png", 1)
-    mosaico = misc.imread ("output/mosaico_1024.png", 1)
+    mosaico = misc.imread ("output/mosaico_" + arch[2] + ".png", 1)
 
     for elemento in center_of_mass:
         y = int(elemento[0])
@@ -90,7 +90,7 @@ def procesar_imagen(archivo = "", factor = 0.5, file = "white"):
         sun[y, x] = 0
 
     #configura un nuevo nombre para la imagen en output/
-    archivo = archivo[:13] + ".png"
+    archivo = arch[0] + "_" + arch[1] + "_" + arch[2] + ".png"
 
     misc.imsave("output/img/" + archivo, sun)
     misc.imsave("output/mosaico_" + arch[2] + ".png", mosaico)

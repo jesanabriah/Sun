@@ -29,14 +29,17 @@ Created on 26/08/2017
 
 from lib import libsun as sun
 
+#crea lista con nombres de archivos
 archivos = sun.ls("img/")
 
-#mosaico.png en blanco
+#mosaico_~.png en blanco
 sun.resetMosaico()
 
+#Procesa imagenes tipo *.jpg
 for archivo in archivos:
     if archivo[-4:] == ".jpg":
         sun.procesar_imagen(archivo)
-    print ("Procesada: " + archivo)
+        print ("Procesada: " + archivo)
 
+#Mensaje de alegria :)
 print ("Procedimiento exitoso!!! :)")

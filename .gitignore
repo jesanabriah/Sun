@@ -103,4 +103,4 @@ ENV/
 # Otros
 output/img/*.png
 img/*.jpg
-
+*~

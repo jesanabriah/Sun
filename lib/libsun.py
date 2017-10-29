@@ -103,3 +103,12 @@ def resetMosaico():
 
     img = misc.imread ("lib/img/sun_1024.png")
     misc.imsave("output/mosaico_1024.png", img)
+
+    img = misc.imread ("lib/img/sun_2048.png")
+    misc.imsave("output/mosaico_2048.png", img)
+
+    img = misc.imread ("lib/img/sun_3072.png")
+    misc.imsave("output/mosaico_3072.png", img)
+
+    img = misc.imread ("lib/img/sun_4096.png")
+    misc.imsave("output/mosaico_4096.png", img)

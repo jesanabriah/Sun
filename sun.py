@@ -31,6 +31,8 @@ from os import listdir
 from scipy import misc
 from scipy import ndimage
 import time
+import pickle
+import sys
 
 # Valores de configuracion del programa:
 X = 1
@@ -44,6 +46,20 @@ DX_MIN = 0.7
 YERR = 2
 
 center = 0, 0
+
+RESOLUCION = "4096"
+
+def load_data():
+    try:
+        with open("output/datos.dat") as f:
+            datos = pickle.load(f)
+    except:
+        datos = {}
+    return datos
+
+def save_data(data):
+    with open("output/datos.dat", "wb") as f:
+        pickle.dump(data, f)
 
 def ls(ruta='.'):
     '''
@@ -145,7 +161,7 @@ def getCenterofMassesofImage():
     for archivo in archivos:
         if archivo[-4:] == ".jpg":
             centers_of_masses[index] = getCMFromImage(archivo)
-            #print "Procesada: " + archivo
+            print "Procesada: " + archivo
             #print center_of_mass[index]
             index = index + 1
 
@@ -162,21 +178,25 @@ def get_ve_com(point, next_points):
 
     res = []
 
-    for next_point in next_points:
+    for i in range(len(next_points)):
         #revisando xpos
-        if next_point[X] > point[X] + DX_MIN: # El +DX_MIN asegura que la mancha si se mueva
-            if next_point[X] < point[X] + XERR:
+        if next_points[i][X] > point[X] + DX_MIN: # El +DX_MIN asegura que la mancha si se mueva
+            if next_points[i][X] < point[X] + XERR:
                 #revisando ypos
-                if next_point[Y] > point[Y] - YERR:
-                    if next_point[Y] < point[Y] + YERR:
-                        val = next_point[0], next_point[1], abs(next_point[Y] - point[Y]), abs(next_point[X] - point[X])
+                if next_points[i][Y] > point[Y] - YERR:
+                    if next_points[i][Y] < point[Y] + YERR:
+                        # y, x, dy, dx, index of next point
+                        val = next_points[i][0], next_points[i][1], abs(next_points[i][Y] - point[Y]), abs(next_points[i][X] - point[X]), i
                         res.append(val)
 
     #primero ordenar
     res.sort(cmp=None, key=getKey3, reverse=False)
     res.sort(cmp=None, key=getKey2, reverse=False)
 
-    return res
+    try:
+        return res[0]
+    except IndexError:
+        return ()
 
 def getCenter(comsoi):
 
@@ -203,12 +223,21 @@ def get_ve_comsoi(coms, next_coms):
         ve_coms.append(get_ve_com(coms[YX][i], next_coms[YX]))
 
     temp = next_coms[T], abs(next_coms[T] - coms[T])
-    ve_coms.append(temp)
+    #ve_coms.append(temp)
 
-    return ve_coms
+    return ve_coms, temp
 
+#inicia el procedo dejando todo en blanco
+resetMosaico()
 
-comsoi = getCenterofMassesofImage()
+# Si se especifica en la linea de comandos entonces no procesara las imagenes
+if len(sys.argv) > 0:
+    if sys.argv[0] == "-f":
+        comsoi = load_data()
+    else:
+        comsoi = getCenterofMassesofImage()
+        save_data(comsoi)
+
 center = getCenter(comsoi)
 
 ve_comsoi = {}
@@ -216,6 +245,29 @@ ve_comsoi = {}
 for i in range(len(comsoi) - 1):
     ve_comsoi[i] = get_ve_comsoi(comsoi[i], comsoi[i + 1])
 
-print comsoi
-print ""
-print ve_comsoi
+#Dibujar mosaico
+print "Dibujando seguimiento de manchas en: output/mosaico_" + RESOLUCION + ".png"
+
+mosaico = misc.imread ("output/mosaico_" + RESOLUCION + ".png", 1)
+
+for i in ve_comsoi:
+    for ve_com in ve_comsoi[i][YX]:
+        try:
+            #print ve_com
+            y = int(ve_com[0])
+            x = int(ve_com[1])
+            mosaico[y, x] = 0
+            mosaico[y, x + 1] = 0
+            mosaico[y, x + 2] = 0
+            #print y, x
+        except IndexError:
+            pass
+        except TypeError:
+            pass
+
+misc.imsave("output/mosaico_" + RESOLUCION + ".png", mosaico)
+
+print "Procedimiento exitoso"
+#print comsoi
+#print ""
+#print ve_comsoi

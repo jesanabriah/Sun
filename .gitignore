@@ -104,3 +104,7 @@ ENV/
 output/img/*.png
 img/*.jpg
 *~
+
+# eclipse
+.project
+.pydevproject

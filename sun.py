@@ -151,7 +151,7 @@ def getCenterofMassesofImage():
     archivos = ls("img/")
 
     # mosaico_~.png en blanco
-    resetMosaico()
+    #resetMosaico()
 
     # Los parametros recomendados son para imagenes de 4096
     # Procesa imagenes tipo *.jpg
@@ -231,12 +231,11 @@ def get_ve_comsoi(coms, next_coms):
 resetMosaico()
 
 # Si se especifica en la linea de comandos entonces no procesara las imagenes
-if len(sys.argv) > 0:
-    if sys.argv[0] == "-f":
-        comsoi = load_data()
-    else:
-        comsoi = getCenterofMassesofImage()
-        save_data(comsoi)
+if len(sys.argv) > 1 and sys.argv[1] == "-f":
+    comsoi = load_data()
+else:
+    comsoi = getCenterofMassesofImage()
+    save_data(comsoi)
 
 center = getCenter(comsoi)
 

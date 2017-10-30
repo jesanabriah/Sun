@@ -30,6 +30,7 @@ Created on 27/08/2017
 from os import listdir
 from scipy import misc
 from scipy import ndimage
+import time
 
 def ls(ruta='.'):
     '''

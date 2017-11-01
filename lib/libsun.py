@@ -160,7 +160,7 @@ def getCenterofMassesofImages():
     index = 0
     for archivo in archivos:
         if archivo[-9:] == "HMIIF.jpg":
-            centers_of_masses[index] = getCMFromImage(archivo, 0.3)
+            centers_of_masses[index] = getCMFromImage(archivo, 0.5)
             print "Procesada: " + archivo
             index = index + 1
 
@@ -326,8 +326,8 @@ def getTethaPhi(y, x, c):
 
     r = math.sqrt(pow(y - c[Y], 2) + pow(x - c[X], 2))
 
-    if r > S_RADIO_PX:
-        return 0, 0
+    if r > S_RADIO_PX * 0.9:
+        return 0
 
     # Calculando los valores para x, y -> theta
     # Inicia calculando valores intermedios
@@ -349,4 +349,29 @@ def getTethaPhi(y, x, c):
         val = 1
     phi = math.asin(val) - alfa
 
+    if abs(x - c[X]) > S_RADIO_PX * math.cos(theta) * 0.9:
+        return 0
+
     return theta, phi
+
+
+def printTethaPhiOfPoints(comsois, ve_comsois, center):
+    for i in ve_comsois:
+        for j in range(len(ve_comsois[i][YX])):
+            try:
+                val1 = getTethaPhi(comsois[i][YX][j][Y], comsois[i][YX][j][X], center)
+                val2 = getTethaPhi(ve_comsois[i][YX][j][Y], ve_comsois[i][YX][j][X], center)
+
+                dphi = abs(val2[1] - val1[1])
+                dt = ve_comsois[i][T][T]
+                w = dphi / dt
+                theta = (val2[0] + val1[0]) / 2
+                #theta_err = abs(theta1 - theta2) / 2 /math.pi*180
+                #tau = 2*math.pi/w
+                if w != 0:
+                    val = math.pow(math.sin(theta), 2)
+                    print val, w
+            except TypeError:
+                pass
+            except IndexError:
+                pass

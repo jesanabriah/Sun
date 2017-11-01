@@ -40,8 +40,6 @@ X, Y, YX, T, NEXT_INDEX = 1, 0, 0, 1, 3
 # Valor predeterminado para el error
 XERR, DX_MIN, YERR = 6, 1, 2
 
-
-
 def mainSun(comsois, RESOLUCION):
 
     # Haya el centro del sol en pixeles en base a un promedio del centro de todas las imagenes
@@ -51,26 +49,10 @@ def mainSun(comsois, RESOLUCION):
     # Calcula valores esperados para las manchas de todas las imagenes
     ve_comsois = sun.get_ve_comsois(comsois)
 
-    # Guarda grafico de seguimiento de machas en archivo
+    # Guarda grafico de seguimiento de manchas en archivo
     # sun.saveMosaico(ve_comsois, RESOLUCION)
 
-    for i in ve_comsois:
-        for j in range(len(ve_comsois[i][YX])):
-            try:
-                theta1, phi1 = sun.getTethaPhi(comsois[i][YX][j][Y], comsois[i][YX][j][X], center)
-                theta2, phi2 = sun.getTethaPhi(ve_comsois[i][YX][j][Y], ve_comsois[i][YX][j][X], center)
-
-                dphi = abs(phi2 - phi1)
-                dt = ve_comsois[i][T][T]
-                w = dphi / dt
-                theta = (theta1 + theta2) / 2
-                #theta_err = abs(theta1 - theta2) / 2 /math.pi*180
-                #tau = 2*math.pi/w
-            except IndexError:
-                pass
-            else:
-                if theta1 > 0.02 and theta2 > 0.02 and w != 0:
-                    print w, theta
+    print sun.printTethaPhiOfPoints(comsois, ve_comsois, center)
 
 
 # Get center of masses of images and resolution

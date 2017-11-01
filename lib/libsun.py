@@ -160,7 +160,7 @@ def getCenterofMassesofImages():
     index = 0
     for archivo in archivos:
         if archivo[-9:] == "HMIIF.jpg":
-            centers_of_masses[index] = getCMFromImage(archivo)
+            centers_of_masses[index] = getCMFromImage(archivo, 0.3)
             print "Procesada: " + archivo
             index = index + 1
 
@@ -324,6 +324,11 @@ def getTethaPhi(y, x, c):
     @return: theta, phi
     '''
 
+    r = math.sqrt(pow(y - c[Y], 2) + pow(x - c[X], 2))
+
+    if r > S_RADIO_PX:
+        return 0, 0
+
     # Calculando los valores para x, y -> theta
     # Inicia calculando valores intermedios
     beta = abs(y - c[Y]) * RAS_OVER_RPXS
@@ -336,7 +341,7 @@ def getTethaPhi(y, x, c):
 
     # Calculando los valores para x, y -> phi
     # Inicia calculando valores intermedios
-    alfa = abs(x - c[x]) * RAS_OVER_RPXS
+    alfa = abs(x - c[X]) * RAS_OVER_RPXS
     rx = S_RADIO * math.cos(theta)
     val = D_TIERRA_SOL / rx * math.sin(alfa)
     # Previene overflow

@@ -28,47 +28,63 @@ Created on 26/08/2017
     @organization: Universidad Nacional de Colombia
 '''
 
+
 from lib import libsun as sun
 import sys
+import math
 
-# Resolucion
-RESOLUCION = ""
+#===============================================================================
+# Valores de configuracion del programa:
+#===============================================================================
+X, Y, YX, T, NEXT_INDEX = 1, 0, 0, 1, 3
+# Valor predeterminado para el error
+XERR, DX_MIN, YERR = 6, 1, 2
 
-# Centro de las imagenes del sol
-center = 0, 0
 
-# Diccionario para guardar los valores de cada mancha
-comsois = {}
 
-# Diccionario para guardar los siguientes valores esperados para cada mancha
-ve_comsois = {}
-
-def mainSun():
+def mainSun(comsois, RESOLUCION):
 
     # Haya el centro del sol en pixeles en base a un promedio del centro de todas las imagenes
-    center = sun.getCenter(comsois)
+    # print sun.getCenter(comsois)
+    center = sun.getCenterFromCleanFile("20140701_001500_4096_HMIIF_CLEAN.jpg")
 
     # Calcula valores esperados para las manchas de todas las imagenes
     ve_comsois = sun.get_ve_comsois(comsois)
 
     # Guarda grafico de seguimiento de machas en archivo
-    sun.saveMosaico(ve_comsois, RESOLUCION)
+    # sun.saveMosaico(ve_comsois, RESOLUCION)
 
-    # Procedimiento exitoso
-    print "Procedimiento exitoso"
+    for i in ve_comsois:
+        for j in range(len(ve_comsois[i][YX])):
+            try:
+                theta1, phi1 = sun.getTethaPhi(comsois[i][YX][j][Y], comsois[i][YX][j][X], center)
+                theta2, phi2 = sun.getTethaPhi(ve_comsois[i][YX][j][Y], ve_comsois[i][YX][j][X], center)
+
+                dphi = abs(phi2 - phi1)
+                dt = ve_comsois[i][T][T]
+                w = dphi / dt
+                theta = (theta1 + theta2) / 2
+                #theta_err = abs(theta1 - theta2) / 2 /math.pi*180
+                #tau = 2*math.pi/w
+            except IndexError:
+                pass
+            else:
+                if theta1 > 0.02 and theta2 > 0.02 and w != 0:
+                    print w, theta
+
 
 # Get center of masses of images and resolution
 # Si se especifica en la linea de comandos entonces no procesara las imagenes
 if len(sys.argv) == 2:
     if sys.argv[1] == "-l":
         comsois, RESOLUCION = sun.load_data()
-        mainSun()
+        mainSun(comsois, RESOLUCION)
     elif sys.argv[1] == "512" or sys.argv[1] == "1024" or sys.argv[1] == "2048" or sys.argv[1] == "3072" or sys.argv[1] == "4096":
-        RESOLUCION = sys.argv[1]
+        RESOLUCION = int(sys.argv[1])
         comsois = sun.getCenterofMassesofImages()
         datos = comsois, RESOLUCION
         sun.save_data(datos)
-        mainSun()
+        print "Procedimiento exitoso. Se ha creado el archivo output/datos.dat"
     else:
         print "Argumento invalido. Pruebe:"
         print ""

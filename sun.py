@@ -71,7 +71,7 @@ def mainSun(comsois, RESOLUCION):
 
     y, x, sin_x_2 = sun.getPlotValuesFromComsois(comsois, ve_comsois, center)
 
-    print u"Realizando regresión polinomica para los datos obtenidos ..."
+    print "Realizando regresión polinomica para los datos obtenidos ..."
     # Retorna ax^2+bx+c -> (a, b, c)
     coeffs = np.polyfit(sin_x_2, y, 2, rcond=None, full=False, w=None, cov=False)
 
@@ -88,8 +88,8 @@ def mainSun(comsois, RESOLUCION):
     for i in range(100):
         x_order.append(min_x + i * (max_x - min_x) / 100)
 
-    print u"El valor mínimo encontrado para el ángulo theta es: " + str(min_x * 180 / math.pi) + " grados"
-    print u"El valor máximo encontrado para el ángulo theta es: " + str(max_x * 180 / math.pi) + " grados"
+    print "El valor mínimo encontrado para el ángulo theta es: " + str(min_x * 180 / math.pi) + " grados"
+    print "El valor máximo encontrado para el ángulo theta es: " + str(max_x * 180 / math.pi) + " grados"
 
     # create a polynomial using coefficients
     f = np.poly1d(coeffs)
@@ -99,8 +99,8 @@ def mainSun(comsois, RESOLUCION):
     w_est = np.array(y_est)
     t_est = 2 * math.pi / w_est / 3600 / 24  # dias
 
-    print u"La velocidad angular mínima calculada es: " + str(min(y))
-    print u"La velocidad angular máxima calculada es: " + str(max(y))
+    print "La velocidad angular mínima calculada es: " + str(min(y))
+    print "La velocidad angular máxima calculada es: " + str(max(y))
 
     x_est = np.array(x_order)
     x_est = x_est / math.pi * 180  # grados

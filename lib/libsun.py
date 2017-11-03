@@ -72,7 +72,17 @@ RAS_OVER_RPXS = S_RADIO_ANGULAR / S_RADIO_PX
 #===============================================================================
 X, Y, YX, T = 1, 0, 0, 1
 # Valor predeterminado para el error
-XERR, DX_MIN, YERR = 6, 1, 2
+XERR, DX_MIN, YERR = 7, 1, 1
+
+def double2latex(w0):
+    w0s = "{:10.3e}".format(w0)
+    m, e = w0s.split('e')
+    w0s = m + " \\times 10^{" + e + "}"
+    return w0s
+
+def decimal2latex(w0):
+    w0s = "{:.3f}".format(w0)
+    return w0s
 
 def load_data():
     'Lee objetos desde archivo'
@@ -373,7 +383,7 @@ def getPlotValuesFromComsois(comsois, ve_comsois, center):
                 #phi = abs(val2[1] + val1[1])/2
                 theta = abs(val2[0] + val1[0]) / 2
 
-                if w > 0 and w < 5.434e-6:
+                if w > 0:# and w < 5.434e-6:
                     val = math.pow(math.sin(theta), 2)
                     y.append(w)
                     x.append(theta)

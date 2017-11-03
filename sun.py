@@ -33,23 +33,6 @@ from lib import libsun as sun
 from pylab import *
 from matplotlib.ticker import FormatStrFormatter
 
-#===============================================================================
-# Valores de configuracion del programa:
-#===============================================================================
-X, Y, YX, T, NEXT_INDEX = 1, 0, 0, 1, 3
-# Valor predeterminado para el error
-XERR, DX_MIN, YERR = 6, 1, 2
-
-def double2latex(w0):
-    w0s = "{:10.3e}".format(w0)
-    m, e = w0s.split('e')
-    w0s = m + " \\times 10^{" + e + "}"
-    return w0s
-
-def decimal2latex(w0):
-    w0s = "{:.3f}".format(w0)
-    return w0s
-
 def mainSun(comsois, RESOLUCION):
 
     # Haya el centro del sol en pixeles en base a un promedio del centro de todas las imagenes
@@ -77,7 +60,7 @@ def mainSun(comsois, RESOLUCION):
 
     w0, b0, a0 = coeffs[2], coeffs[1] / coeffs[2], coeffs[0] / coeffs[2]
     equ = r'''$w = %(w0)s \cdot (1  + %(b0)s \cdot sin(\theta)^2  + %(a0)s \cdot sin(\theta)^4)$'''
-    equ = equ % {'w0': double2latex(w0), 'b0': decimal2latex(b0), 'a0': decimal2latex(a0)}
+    equ = equ % {'w0': sun.double2latex(w0), 'b0': sun.decimal2latex(b0), 'a0': sun.decimal2latex(a0)}
 
     print ""
     print "Equación obtenida en formato latex: " + equ
@@ -120,6 +103,7 @@ def mainSun(comsois, RESOLUCION):
     xlabel(r'$\theta/[grados]$')
     ylabel(r'$\omega/[rad/s]$')
     title(u"Regresión polinomica de los datos")
+    plt.grid()
     savefig('output/comparacion.png')
     plt.show()
 
@@ -132,9 +116,10 @@ def mainSun(comsois, RESOLUCION):
     xlabel(r'$\theta/[grados]$')
     ylabel(r"$\tau$" + u"/[días]")
     title(u'Periodo estimado de rotación')
+    plt.grid()
     savefig('output/periodo.png')
     plt.show()
-    
+
     xFormatter = FormatStrFormatter('%.0f')
     yFormatter = FormatStrFormatter('%.2e')
     ax2 = subplot(111)
@@ -144,6 +129,7 @@ def mainSun(comsois, RESOLUCION):
     xlabel(r'$\theta/[grados]$')
     ylabel(r'$\omega/[rad/s]$')
     title('Velocidad angular estimada')
+    plt.grid()
     savefig('output/regresion.png')
     plt.show()
 

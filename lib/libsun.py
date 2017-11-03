@@ -238,8 +238,7 @@ def get_ve_comsois(comsois):
     return ve_comsois
 
 def saveMosaico(ve_comsoi, res):
-    # Dibujar mosaico
-    print "Dibujando seguimiento de manchas en: output/mosaico_" + str(res) + ".png"
+
     # mosaico_~.png en blanco
     resetMosaico(res)
     # Lee archivo
@@ -259,6 +258,7 @@ def saveMosaico(ve_comsoi, res):
                 pass
     # Guarda imagen procesada
     misc.imsave("output/mosaico_" + str(res) + ".png", mosaico)
+
 
 def procesar_imagen(archivo="", factor=0.5, f="white"):
     '''
@@ -355,7 +355,10 @@ def getTethaPhi(y, x, c):
     return theta, phi
 
 
-def printTethaPhiOfPoints(comsois, ve_comsois, center):
+def getPlotValuesFromComsois(comsois, ve_comsois, center):
+    x = []
+    y = []
+    sin_x_2 = []
     for i in ve_comsois:
         for j in range(len(ve_comsois[i][YX])):
             try:
@@ -365,13 +368,16 @@ def printTethaPhiOfPoints(comsois, ve_comsois, center):
                 dphi = abs(val2[1] - val1[1])
                 dt = ve_comsois[i][T][T]
                 w = dphi / dt
-                theta = (val2[0] + val1[0]) / 2
-                #theta_err = abs(theta1 - theta2) / 2 /math.pi*180
-                #tau = 2*math.pi/w
+                theta = abs(val2[0] + val1[0]) / 2
+
                 if w != 0:
                     val = math.pow(math.sin(theta), 2)
-                    print val, w
+                    y.append(w)
+                    x.append(theta)
+                    sin_x_2.append(val)
+
             except TypeError:
                 pass
             except IndexError:
                 pass
+    return y, x, sin_x_2

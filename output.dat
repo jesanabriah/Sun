@@ -6,7 +6,7 @@ Se ha almacenado una imagen del seguimiento de las manchas en: output/mosaico_40
 
 Realizando regresión polinomica para los datos obtenidos ...
 
-Equación obtenida en formato latex: $w =  2.716 \times 10^{-06} \cdot (1  0.025 \cdot sin(\theta)^2  -0.120 \cdot sin(\theta)^4)$
+Equación obtenida en formato latex: $w =  2.716 \times 10^{-06} \cdot (1  + 0.025 \cdot sin(\theta)^2  + -0.120 \cdot sin(\theta)^4)$
 El valor mínimo encontrado para el ángulo theta es: 0.0969395554015 grados
 El valor máximo encontrado para el ángulo theta es: 32.3029570837 grados
 La velocidad angular mínima calculada es: 1.27599423633e-07

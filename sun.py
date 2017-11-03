@@ -76,7 +76,7 @@ def mainSun(comsois, RESOLUCION):
     coeffs = np.polyfit(sin_x_2, y, 2, rcond=None, full=False, w=None, cov=False)
 
     w0, b0, a0 = coeffs[2], coeffs[1] / coeffs[2], coeffs[0] / coeffs[2]
-    equ = r'''$w = %(w0)s \cdot (1  %(b0)s \cdot sin(\theta)^2  %(a0)s \cdot sin(\theta)^4)$'''
+    equ = r'''$w = %(w0)s \cdot (1  + %(b0)s \cdot sin(\theta)^2  + %(a0)s \cdot sin(\theta)^4)$'''
     equ = equ % {'w0': double2latex(w0), 'b0': decimal2latex(b0), 'a0': decimal2latex(a0)}
 
     print ""

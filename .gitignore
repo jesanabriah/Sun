@@ -102,7 +102,7 @@ ENV/
 
 # Otros
 output/img/*.png
-img/*.jpg
+img/*HMIIF.jpg
 *~
 
 # eclipse

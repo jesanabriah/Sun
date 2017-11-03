@@ -57,9 +57,8 @@ S_RADIO = 6.957e8  # Metros
 DTS_OVER_RS = D_TIERRA_SOL / S_RADIO
 
 #===============================================================================
-# El radio medio del Sol en Pixeles/RESOLUCION para una imagen determinada
-# Es decir, el porcentaje del ancho de la imagen que ocupa el radio del Sol
-# S_RADIO_PX = 3745/2/4096
+# El radio medio del Sol en Pixeles para una imagen determinada
+# S_RADIO_PX = 3745/2
 #===============================================================================
 S_RADIO_PX = 3745 / 2
 
@@ -160,7 +159,7 @@ def getCenterofMassesofImages():
     index = 0
     for archivo in archivos:
         if archivo[-9:] == "HMIIF.jpg":
-            centers_of_masses[index] = getCMFromImage(archivo, 0.5)
+            centers_of_masses[index] = getCMFromImage(archivo)
             print "Procesada: " + archivo
             index = index + 1
 
@@ -324,38 +323,41 @@ def getTethaPhi(y, x, c):
     @return: theta, phi
     '''
 
+    # Previene overflow
     r = math.sqrt(pow(y - c[Y], 2) + pow(x - c[X], 2))
-
-    if r > S_RADIO_PX * 0.9:
+    if r > S_RADIO_PX * 0.99:
         return 0
 
     # Calculando los valores para x, y -> theta
     # Inicia calculando valores intermedios
     beta = abs(y - c[Y]) * RAS_OVER_RPXS
     val = DTS_OVER_RS * math.sin(beta)
-    # Previene overflow
-    if val > 1:
-        val = 1
-    # calcula theta
-    theta = math.asin(val) - beta
+    theta = abs(math.asin(val) - beta)
 
     # Calculando los valores para x, y -> phi
     # Inicia calculando valores intermedios
     alfa = abs(x - c[X]) * RAS_OVER_RPXS
     rx = S_RADIO * math.cos(theta)
     val = D_TIERRA_SOL / rx * math.sin(alfa)
-    # Previene overflow
-    if val > 1:
-        val = 1
-    phi = math.asin(val) - alfa
-
-    if abs(x - c[X]) > S_RADIO_PX * math.cos(theta) * 0.9:
-        return 0
+    phi = abs(math.asin(val) - alfa)
 
     return theta, phi
 
 
 def getPlotValuesFromComsois(comsois, ve_comsois, center):
+    '''
+    Organiza los valores que van a ser de utilidad para graficar.
+    En este caso, debido a la naturaleza de la ecuacion esperada,
+    seran x, y y sin(x)^2
+
+    @param comsois: Diccionario de centros de masas de las imagenes
+
+    @param ve_comsois: Diccionario de relaciones esperadas para el seguimiento de las manchas
+
+    @param center: Una tupla (y, x) con los valores del centro del Sol
+
+    @return: y, x, sin_x_2
+    '''
     x = []
     y = []
     sin_x_2 = []
@@ -368,9 +370,10 @@ def getPlotValuesFromComsois(comsois, ve_comsois, center):
                 dphi = abs(val2[1] - val1[1])
                 dt = ve_comsois[i][T][T]
                 w = dphi / dt
+                #phi = abs(val2[1] + val1[1])/2
                 theta = abs(val2[0] + val1[0]) / 2
 
-                if w != 0:
+                if w > 0:# and w < 5.434e-6:
                     val = math.pow(math.sin(theta), 2)
                     y.append(w)
                     x.append(theta)

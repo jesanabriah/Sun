@@ -30,9 +30,6 @@ Created on 26/08/2017
 
 
 from lib import libsun as sun
-import sys
-import math
-import numpy as np
 from pylab import *
 from matplotlib.ticker import FormatStrFormatter
 
@@ -102,6 +99,9 @@ def mainSun(comsois, RESOLUCION):
     w_est = np.array(y_est)
     t_est = 2 * math.pi / w_est / 3600 / 24  # dias
 
+    print u"La velocidad angular mínima calculada es: " + str(min(y))
+    print u"La velocidad angular máxima calculada es: " + str(max(y))
+
     x_est = np.array(x_order)
     x_est = x_est / math.pi * 180  # grados
 
@@ -121,30 +121,31 @@ def mainSun(comsois, RESOLUCION):
     ylabel(r'$\omega/[rad/s]$')
     title(u"Regresión polinomica de los datos")
     savefig('output/comparacion.png')
-    plt.close()
+    plt.show()
 
     xFormatter = FormatStrFormatter('%.0f')
-    yFormatter = FormatStrFormatter('%.0e')
-    ax = subplot(111)
+    yFormatter = FormatStrFormatter('%.2f')
+    ax1 = subplot(111)
+    plt.plot(x_est, t_est, 'o-', label='estimate', markersize=1)
+    ax1.xaxis.set_major_formatter(xFormatter)
+    ax1.yaxis.set_major_formatter(yFormatter)
+    xlabel(r'$\theta/[grados]$')
+    ylabel(r"$\tau$" + u"/[días]")
+    title(u'Periodo estimado de rotación')
+    savefig('output/periodo.png')
+    plt.show()
+    
+    xFormatter = FormatStrFormatter('%.0f')
+    yFormatter = FormatStrFormatter('%.2e')
+    ax2 = subplot(111)
     plt.plot(x_est, y_est, 'o-', label='estimate', markersize=1)
-    ax.xaxis.set_major_formatter(xFormatter)
-    ax.yaxis.set_major_formatter(yFormatter)
+    ax2.xaxis.set_major_formatter(xFormatter)
+    ax2.yaxis.set_major_formatter(yFormatter)
     xlabel(r'$\theta/[grados]$')
     ylabel(r'$\omega/[rad/s]$')
     title('Velocidad angular estimada')
     savefig('output/regresion.png')
-    plt.close()
-
-    xFormatter = FormatStrFormatter('%.0f')
-    yFormatter = FormatStrFormatter('%.2f')
-    ax = subplot(111)
-    plt.plot(x_est, t_est, 'o-', label='estimate', markersize=1)
-    ax.xaxis.set_major_formatter(xFormatter)
-    ax.yaxis.set_major_formatter(yFormatter)
-    xlabel(r'$\theta/[grados]$')
-    ylabel(r'$\tau/[s]$')
-    title(u'Periodo estimado de rotación')
-    savefig('output/periodo.png')
+    plt.show()
 
     print ""
     print "Se han almacenado los resultados en:"

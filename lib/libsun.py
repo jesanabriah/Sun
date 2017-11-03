@@ -373,7 +373,7 @@ def getPlotValuesFromComsois(comsois, ve_comsois, center):
                 #phi = abs(val2[1] + val1[1])/2
                 theta = abs(val2[0] + val1[0]) / 2
 
-                if w > 0:# and w < 5.434e-6:
+                if w > 0 and w < 5.434e-6:
                     val = math.pow(math.sin(theta), 2)
                     y.append(w)
                     x.append(theta)

@@ -2,9 +2,7 @@
 
 @author: Jorge Eliécer Sanabria Hernández
 
-Usar las imagenes descargadas desde https://sdo.gsfc.nasa.gov/
-
-Se recomienda usar las imagenes de (4096 x 4096) px
+Usar las imagenes descargadas desde https://sdo.gsfc.nasa.gov/ y almacenarlas en la carpeta 'img/'. Se recomienda usar las imagenes de (4096 x 4096) px.
 
 Para procesar las imagenes y almacenar los datos use:
 
@@ -13,3 +11,5 @@ Para procesar las imagenes y almacenar los datos use:
 Luego, para procesar los datos use:
 
     python sun.py -l
+
+El resultado sera la ecuación obtenida por regresion polinomica de la velocidad diferencial del Sol y tres imágenes descriptivas, graficando datos de interes para el analisis de la situación.

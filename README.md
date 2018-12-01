@@ -1,4 +1,4 @@
-# Sun - Rotación diferencial del Sol
+# Sun - Differential rotation of the Sun
 
 @author: Jorge Eliécer Sanabria Hernández
 

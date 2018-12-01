@@ -2,14 +2,14 @@
 
 @author: Jorge Eliécer Sanabria Hernández
 
-Usar las imagenes descargadas desde https://sdo.gsfc.nasa.gov/ y almacenarlas en la carpeta 'img/'. Se recomienda usar las imagenes de (4096 x 4096) px.
+Use the images downloaded from https://sdo.gsfc.nasa.gov/ and store them in the 'img /' folder. It is recommended to use the images of (4096 x 4096) px.
 
-Para procesar las imagenes y almacenar los datos use:
+To process the images and store the data use:
 
     python sun.py 4096
 
-Luego, para procesar los datos use:
+Then, to process the data use:
 
     python sun.py -l
 
-El resultado sera la ecuación obtenida por regresion polinomica de la velocidad diferencial del Sol y tres imágenes descriptivas, graficando datos de interes para el analisis de la situación.
+The result will be the equation obtained by polynomial regression of the Sun's differential velocity and three descriptive images, plotting data of interest for the analysis of the situation.
